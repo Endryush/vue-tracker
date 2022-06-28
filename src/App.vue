@@ -63,10 +63,10 @@ export default defineComponent({
 }
 main {
   --bg-primary: #fff;
-  --text-primary: #2c0d35;
+  --text-primary: #151416;
 }
 main.dark-mode {
-  --bg-primary: #2c0d35;
+  --bg-primary: #151416;
   --text-primary: #ddd;
 }
 .conteudo {
