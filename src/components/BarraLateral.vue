@@ -1,7 +1,7 @@
 <template>
   <header>
       <h1>
-        <img src="../assets/hibi.jpg" alt="">  
+        <img src="../assets/hibi.png" alt="">  
       </h1>
       <button class="button" @click="alterarTema">
         {{ textoBotao }}
@@ -48,6 +48,9 @@ header {
   width: 100%;
   height: 100vh;
   text-align: center;
+}
+.button {
+  margin-top: 24px;
 }
 @media only screen and (max-width: 768px) {
   header {
