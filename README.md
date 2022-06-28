@@ -1,4 +1,4 @@
-# vue-tracker
+# hibi-tracker
 
 ## Project setup
 ```
