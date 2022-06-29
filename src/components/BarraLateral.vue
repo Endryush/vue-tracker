@@ -1,11 +1,27 @@
 <template>
   <header>
-      <h1>
+      <h1 class="img-title" >
         <img src="../assets/hibi.png" alt="">  
       </h1>
       <button class="button" @click="alterarTema">
         {{ textoBotao }}
       </button>
+      <nav class="panel mt-5">
+        <ul>
+          <li>
+            <router-link class="link" to="/">
+              <i class="fas fa-tasks"></i>
+                Tarefas
+            </router-link> 
+          </li>
+          <li>
+            <router-link class="link" to="/projetos">
+              <i class="fas fa-project-diagram"></i>
+                Projetos
+            </router-link> 
+          </li>
+        </ul>
+      </nav>
   </header>
 </template>
 
@@ -51,6 +67,25 @@ header {
 }
 .button {
   margin-top: 24px;
+}
+.panel {
+  text-align: left;
+  font-size: 16px;
+}
+.panel li {
+    margin: 8px 0;
+}
+.link {
+    color: #fff;
+}
+.link:hover {
+    color: #964dff;
+}
+.link.router-link-active {
+    color: #964dff;
+}
+.img-title img {
+  max-width: 60%;
 }
 @media only screen and (max-width: 768px) {
   header {
