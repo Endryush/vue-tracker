@@ -41,6 +41,8 @@ import { defineComponent } from "vue";
 import { useStore } from "@/store";
 import { computed } from "@vue/reactivity";
 import { EXCLUIR_PROJETO } from "@/store/tipo-mutacoes";
+import useNotificador from '@/hooks/notificador'
+import { TipoNotificacao } from "@/interfaces/INotificacao";
 
 export default defineComponent({
     name: '-Lista',
@@ -48,14 +50,17 @@ export default defineComponent({
     methods: {
         excluir(id: string) :void {
             this.store.commit(EXCLUIR_PROJETO, id)
+             this.notificar(TipoNotificacao.SUCESSO, 'Sucesso!', 'Projeto excluido com sucesso!')
         }
     },
 
     setup() {
         const store = useStore()
+        const { notificar } = useNotificador()
         return {
             projetos: computed(() => store.state.projetos),
-            store
+            store,
+            notificar
         }
     }
 });
