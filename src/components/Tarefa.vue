@@ -10,6 +10,9 @@
             <div class="column temporizador-tarefa">
                 <Cronometro :tempo-em-segundos="tarefa.duracaoEmSegundos" />
             </div>
+            <span class="icon is-small"  @click="tarefaClicada">
+                <i class="fas fa-pencil-alt"></i>
+            </span>
         </div>
     </Box>
 </template>
@@ -24,10 +27,18 @@ export default defineComponent({
 
     components: { Cronometro, Box },
 
+    emits: ['aoTarefaClicada'],
+
     props: {
         tarefa: {
             type: Object as PropType<ITarefa>,
             required: true
+        }
+    },
+
+    methods: {
+        tarefaClicada(): void {
+            this.$emit('aoTarefaClicada', this.tarefa)
         }
     }
 })

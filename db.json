@@ -16,5 +16,21 @@
       "nome": "010101010",
       "id": 7
     }
+  ],
+  "tarefas": [
+    {
+      "duracaoEmSegundos": 0,
+      "descricao": "little littled78778778",
+      "id": 1
+    },
+    {
+      "duracaoEmSegundos": 7,
+      "descricao": "liroooooooou0004",
+      "projeto": {
+        "nome": "010101010",
+        "id": 7
+      },
+      "id": 2
+    }
   ]
 }
