@@ -7,33 +7,39 @@
             <Box v-if="listaVazia">
                 Nenhuma tarefa feita hoje!
             </Box>
-            <div v-if="tarefaSelecionada" class="modal" :class="{ 'is-active': tarefaSelecionada }">
-                <div class="modal-background"></div>
-                <div class="modal-card">
-                    <header class="modal-card-head">
-                        <p class="modal-card-title">Editando Tarefa</p>
-                        <button class="delete" aria-label="close" @click="fecharModal"></button>
-                    </header>
-                    <section class="modal-card-body">
-                        <div class="field">
-                            <label for="descricaoDaTarefa" class="label">
-                                Descrição
-                            </label>
-                            <input type="text" class="input" v-model="tarefaSelecionada.descricao" id="descricaoDaTarefa">
-                        </div>
-                    </section>
-                    <footer class="modal-card-foot">
-                        <button class="button is-success" @click="alterarTarefa">Salvar Alterações</button>
-                        <button class="button" @click="fecharModal">Cancel</button>
-                    </footer>
-                </div>
+            <div class="field">
+                <p class="control has-icons-left">
+                    <input class="input" type="text" placeholder="Digite para filtrar">
+                    <span class="icon is-small is-left">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </p>
             </div>
+
+            <Modal :mostrar="tarefaSelecionada != null">
+                <template v-slot:header class="modal-card-head">
+                    <p class="modal-card-title">Editando Tarefa</p>
+                    <button class="delete" aria-label="close" @click="fecharModal"></button>
+                </template>
+                <template v-slot:body class="modal-card-body">
+                    <div class="field">
+                        <label for="descricaoDaTarefa" class="label">
+                            Descrição
+                        </label>
+                        <input type="text" class="input" v-model="tarefaSelecionada.descricao" id="descricaoDaTarefa">
+                    </div>
+                </template>
+                <template v-slot:footer class="modal-card-foot">
+                    <button class="button is-success" @click="alterarTarefa">Salvar Alterações</button>
+                    <button class="button" @click="fecharModal">Cancel</button>
+                </template>
+            </Modal>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, watchEffect } from 'vue';
 import Formulario from '../components/Formulario.vue'
 import Tarefa from '../components/Tarefa.vue';
 import Box from '../components/Box.vue';
@@ -41,13 +47,15 @@ import { useStore } from '@/store';
 import { OBTER_TAREFAS, CADASTRAR_TAREFA, OBTER_PROJETOS, ALTERAR_TAREFA } from '@/store/tipo-acoes';
 import { computed } from '@vue/reactivity';
 import ITarefa from '@/interfaces/ITarefa';
+import Modal from '@/components/Modal.vue';
 
 export default defineComponent({
     name: '-Tarefas',
     components: {
         Formulario,
         Tarefa,
-        Box
+        Box,
+        Modal
     },
 
     data() {
@@ -66,9 +74,20 @@ export default defineComponent({
         const store = useStore()
         store.dispatch(OBTER_TAREFAS)
         store.dispatch(OBTER_PROJETOS)
+
+        const filtro = ref('')
+
+        const tarefas = computed(() => store.state.tarefas.filter(tarefa => !filtro.value || tarefa.descricao.includes(filtro.value)))
+
+        watchEffect(() => {
+            store.dispatch(OBTER_TAREFAS, filtro.value)
+        })
+
+
         return {
-            tarefas: computed(() => store.state.tarefas),
-            store
+            tarefas,
+            store,
+            filtro
         }
     },
 
@@ -84,7 +103,7 @@ export default defineComponent({
         fecharModal(): void {
             this.tarefaSelecionada = null
         },
-        alterarTarefa() : void {
+        alterarTarefa(): void {
             this.store.dispatch(ALTERAR_TAREFA, this.tarefaSelecionada)
                 .then(() => this.fecharModal())
         }
